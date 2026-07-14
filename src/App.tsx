@@ -19,6 +19,8 @@ import {
   Sparkles
 } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 interface AgentLog {
   agentName: string;
   input: string;
@@ -66,7 +68,7 @@ export default function App() {
   // Fetch initial session history
   const fetchHistory = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/history');
+      const res = await fetch(`${API_BASE}/api/history`);
       if (res.ok) {
         const data = await res.json();
         setHistory(data);
@@ -79,7 +81,7 @@ export default function App() {
   // Fetch global logs for auditor role
   const fetchGlobalLogs = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/logs');
+      const res = await fetch(`${API_BASE}/api/logs`);
       if (res.ok) {
         const data = await res.json();
         setGlobalLogs(data);
@@ -102,7 +104,7 @@ export default function App() {
   // Load a trip's details when clicked from history
   const handleSelectTrip = async (trip: TripRequest) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/trip/${trip.id}`);
+      const res = await fetch(`${API_BASE}/api/trip/${trip.id}`);
       if (res.ok) {
         const data = await res.json();
         setSelectedTrip(data);
@@ -212,7 +214,7 @@ export default function App() {
     try {
       setCurrentStep(1); // Router Analysis
       
-      const apiPromise = fetch('http://localhost:5000/api/plan', {
+      const apiPromise = fetch(`${API_BASE}/api/plan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
